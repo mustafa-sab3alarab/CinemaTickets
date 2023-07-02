@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,8 +29,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinematickets.R
 import com.example.cinematickets.composable.ActorItem
@@ -45,13 +48,28 @@ import com.example.cinematickets.util.Constant.DEFAULT_IMAGE
 fun BookingScreen() {
     BookingContent()
 }
-
 @Composable
 private fun BookingContent() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Header(modifier = Modifier.align(Alignment.TopCenter))
-        BottomSheet(modifier = Modifier.align(Alignment.BottomCenter))
+
+    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+        val (header , bottomSheet) = createRefs()
+
+        val guideLine = createGuidelineFromTop(0.5f)
+        Header(
+            modifier = Modifier.constrainAs(header){
+                top.linkTo(parent.top)
+            }
+        )
+        BottomSheet(
+            modifier = Modifier.constrainAs(bottomSheet){
+                top.linkTo(guideLine)
+            }
+        )
     }
+//    Box(modifier = Modifier.fillMaxSize()) {
+//        Header(modifier = Modifier.align(Alignment.TopCenter))
+//        BottomSheet(modifier = Modifier.align(Alignment.BottomCenter))
+//    }
 }
 
 @Composable
@@ -96,7 +114,7 @@ private fun BottomSheet(
 ) {
     Box(
         modifier = modifier
-            .aspectRatio(4f / 4.5f)
+            .fillMaxSize()
             .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
             .background(Color.White)
     ) {
