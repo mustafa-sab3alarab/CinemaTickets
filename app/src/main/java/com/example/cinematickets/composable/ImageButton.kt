@@ -28,6 +28,7 @@ fun ImageButton(
     painter: Int,
     modifier: Modifier = Modifier,
     backgroundColor: Color = LightWhite,
+    iconTint : Color = Color.White,
     text: String = "",
     textSize : Int = 16,
     onClick: () -> Unit
@@ -44,7 +45,7 @@ fun ImageButton(
         Icon(
             painter = painterResource(painter),
             contentDescription = "$text button",
-            tint = TextWhite
+            tint = iconTint
         )
         if (text.isNotEmpty()) {
             SpacerHorizontal8()
