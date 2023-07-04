@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -25,8 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -59,145 +58,90 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val pagerState = rememberPagerState()
-    val selectedItem by remember { mutableStateOf(0) }
-    val navItems by remember { mutableStateOf(listOf("Songs", "Artists", "Playlists")) }
-    val navIcons by remember { mutableStateOf(listOf(R.drawable.bitcoin_card, R.drawable.play)) }
-    HomeContent(
-        state = state,
-        pagerState = pagerState,
-        navSelectedItem = selectedItem,
-        navItems,
-        navIcons
-    )
+    HomeContent(state = state, pagerState = pagerState)
 }
 
 
 @Composable
 fun HomeContent(
     state: HomeUIState,
-    pagerState: PagerState,
-    navSelectedItem: Int,
-    navItems: List<String>,
-    navIcons: List<Int>,
+    pagerState: PagerState
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
 
-        Image(
-            modifier = Modifier
-                .fillMaxSize()
-                .blur(40.dp),
-            contentScale = ContentScale.Crop,
-            painter = rememberAsyncImagePainter(model = state.movies[pagerState.currentPage].imageUrl),
-            contentDescription = ""
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            Color.Transparent,
-                            Color.White,
-                            Color.White
-                        )
-                    )
-                )
-        )
+        BackgroundImage(state, pagerState)
 
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 32.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                OutlineButton(
-                    text = "Now Showing",
-                    textColor = Color.White,
-                    buttonColor = Orange80
-                ) {}
-                SpacerHorizontal8()
-                OutlineButton(text = "Coming Soon", textColor = Color.White) {}
-            }
+            Header()
 
             SpacerVertical32()
-            MoviePager(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                state = state, pagerState = pagerState
-            )
+
+            MoviePager(modifier = Modifier.fillMaxWidth(), state = state, pagerState = pagerState)
 
             SpacerVertical16()
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Icon(painter = painterResource(id = R.drawable.clock), contentDescription = "clock")
-                SpacerHorizontal8()
-                Text(text = "2h 23m")
-            }
+            MovieDetails()
 
-            SpacerVertical16()
-
-            Text(
-                text = "Fantastic Beasts: The\nSecrets of Dumbledore",
-                fontSize = 22.sp,
-                textAlign = TextAlign.Center
-            )
-
-            SpacerVertical16()
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                OutlineButton(text = "Fantasy") {}
-                SpacerHorizontal8()
-                OutlineButton(text = "Adventure") {}
-            }
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter).padding(bottom = 32.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            ImageButton(
-                painter = R.drawable.video_play,
-                modifier = Modifier.size(48.dp),
-                backgroundColor = Orange80
-            ) {}
-            ImageButton(
-                painter = R.drawable.search_normal,
-                modifier = Modifier.size(48.dp),
-                iconTint = Color.Gray,
-                backgroundColor = Color.Transparent
-            ) {}
-            ImageButton(
-                painter = R.drawable.ticket,
-                modifier = Modifier.size(48.dp),
-                iconTint = Color.Gray,
-                backgroundColor = Color.Transparent
-            ) {}
-            ImageButton(
-                painter = R.drawable.profile,
-                modifier = Modifier.size(48.dp),
-                iconTint = Color.Gray,
-                backgroundColor = Color.Transparent
-            ) {}
-        }
+        BottomNavBar()
     }
 }
 
 @Composable
-fun MoviePager(modifier: Modifier = Modifier, state: HomeUIState, pagerState: PagerState) {
+fun BackgroundImage(state: HomeUIState, pagerState: PagerState) {
+    Image(
+        modifier = Modifier
+            .fillMaxSize()
+            .blur(40.dp),
+        contentScale = ContentScale.Crop,
+        painter = rememberAsyncImagePainter(model = state.movies[pagerState.currentPage].imageUrl),
+        contentDescription = ""
+    )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color.Transparent,
+                        Color.Transparent,
+                        Color.White,
+                        Color.White
+                    )
+                )
+            )
+    )
+}
+
+@Composable
+private fun Header() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 32.dp),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        OutlineButton(
+            text = "Now Showing",
+            textColor = Color.White,
+            buttonColor = Orange80
+        ) {}
+        SpacerHorizontal8()
+        OutlineButton(text = "Coming Soon", textColor = Color.White) {}
+    }
+}
+
+@Composable
+private fun MoviePager(
+    modifier: Modifier = Modifier,
+    state: HomeUIState,
+    pagerState: PagerState
+) {
     HorizontalPager(
         modifier = modifier,
         pageCount = state.movies.size,
@@ -233,6 +177,72 @@ fun MoviePager(modifier: Modifier = Modifier, state: HomeUIState, pagerState: Pa
                 contentDescription = ""
             )
         }
+    }
+}
+
+@Composable
+private fun MovieDetails() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Icon(painter = painterResource(id = R.drawable.clock), contentDescription = "clock")
+        SpacerHorizontal8()
+        Text(text = "2h 23m")
+    }
+
+    SpacerVertical16()
+
+    Text(
+        text = "Fantastic Beasts: The\nSecrets of Dumbledore",
+        fontSize = 22.sp,
+        textAlign = TextAlign.Center
+    )
+
+    SpacerVertical16()
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        OutlineButton(text = "Fantasy") {}
+        SpacerHorizontal8()
+        OutlineButton(text = "Adventure") {}
+    }
+}
+
+@Composable
+private fun BoxScope.BottomNavBar() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .align(Alignment.BottomCenter)
+            .padding(bottom = 32.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
+        ImageButton(
+            painter = R.drawable.video_play,
+            modifier = Modifier.size(48.dp),
+            backgroundColor = Orange80
+        ) {}
+        ImageButton(
+            painter = R.drawable.search_normal,
+            modifier = Modifier.size(48.dp),
+            iconTint = Color.Gray,
+            backgroundColor = Color.Transparent
+        ) {}
+        ImageButton(
+            painter = R.drawable.ticket,
+            modifier = Modifier.size(48.dp),
+            iconTint = Color.Gray,
+            backgroundColor = Color.Transparent
+        ) {}
+        ImageButton(
+            painter = R.drawable.profile,
+            modifier = Modifier.size(48.dp),
+            iconTint = Color.Gray,
+            backgroundColor = Color.Transparent
+        ) {}
     }
 }
 
