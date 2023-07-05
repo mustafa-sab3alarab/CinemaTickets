@@ -1,4 +1,4 @@
-package com.example.cinematickets.composable
+package com.example.cinematickets.screens.booking
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.example.cinematickets.screens
+package com.example.cinematickets.screens.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -44,9 +44,6 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.cinematickets.R
 import com.example.cinematickets.composable.ImageButton
 import com.example.cinematickets.composable.OutlineButton
-import com.example.cinematickets.composable.SpacerHorizontal8
-import com.example.cinematickets.composable.SpacerVertical16
-import com.example.cinematickets.composable.SpacerVertical32
 import com.example.cinematickets.ui.theme.Orange80
 import com.example.cinematickets.viewmodels.HomeUIState
 import com.example.cinematickets.viewmodels.HomeViewModel
@@ -63,7 +60,7 @@ fun HomeScreen(
 
 
 @Composable
-fun HomeContent(
+private fun HomeContent(
     state: HomeUIState,
     pagerState: PagerState
 ) {
@@ -78,11 +75,8 @@ fun HomeContent(
 
             Header()
 
-            SpacerVertical32()
 
-            MoviePager(modifier = Modifier.fillMaxWidth(), state = state, pagerState = pagerState)
-
-            SpacerVertical16()
+            MoviePager(modifier = Modifier.fillMaxWidth().padding(top = 32.dp, bottom = 16.dp), state = state, pagerState = pagerState)
 
             MovieDetails()
 
@@ -93,7 +87,7 @@ fun HomeContent(
 }
 
 @Composable
-fun BackgroundImage(state: HomeUIState, pagerState: PagerState) {
+private fun BackgroundImage(state: HomeUIState, pagerState: PagerState) {
     Image(
         modifier = Modifier
             .fillMaxSize()
@@ -118,6 +112,8 @@ fun BackgroundImage(state: HomeUIState, pagerState: PagerState) {
     )
 }
 
+
+
 @Composable
 private fun Header() {
     Row(
@@ -126,12 +122,11 @@ private fun Header() {
             .padding(top = 32.dp),
         horizontalArrangement = Arrangement.Center
     ) {
-        OutlineButton(
+        OutlineButton(modifier = Modifier.padding(end = 8.dp),
             text = "Now Showing",
             textColor = Color.White,
             buttonColor = Orange80
         ) {}
-        SpacerHorizontal8()
         OutlineButton(text = "Coming Soon", textColor = Color.White) {}
     }
 }
@@ -186,27 +181,21 @@ private fun MovieDetails() {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        Icon(painter = painterResource(id = R.drawable.clock), contentDescription = "clock")
-        SpacerHorizontal8()
+        Icon(painter = painterResource(id = R.drawable.clock), contentDescription = "clock", modifier = Modifier.padding(end = 8.dp))
         Text(text = "2h 23m")
     }
 
-    SpacerVertical16()
-
-    Text(
+    Text(modifier = Modifier.padding(vertical = 16.dp),
         text = "Fantastic Beasts: The\nSecrets of Dumbledore",
         fontSize = 22.sp,
         textAlign = TextAlign.Center
     )
 
-    SpacerVertical16()
-
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        OutlineButton(text = "Fantasy") {}
-        SpacerHorizontal8()
+        OutlineButton(modifier = Modifier.padding(end = 8.dp),text = "Fantasy") {}
         OutlineButton(text = "Adventure") {}
     }
 }
@@ -244,11 +233,4 @@ private fun BoxScope.BottomNavBar() {
             backgroundColor = Color.Transparent
         ) {}
     }
-}
-
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
 }

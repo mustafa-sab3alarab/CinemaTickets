@@ -1,4 +1,4 @@
-package com.example.cinematickets.composable
+package com.example.cinematickets.screens.booking
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text

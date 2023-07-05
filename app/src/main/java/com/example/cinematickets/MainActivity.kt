@@ -7,9 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.cinematickets.screens.BookingScreen
-import com.example.cinematickets.screens.HomeScreen
-import com.example.cinematickets.screens.TicketScreen
+import com.example.cinematickets.screens.ticket.TicketScreen
 import com.example.cinematickets.ui.theme.CinemaTicketsTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +22,8 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    HomeScreen()
+//                    HomeScreen()
+                    TicketScreen()
                 }
             }
         }

@@ -1,4 +1,4 @@
-package com.example.cinematickets.screens
+package com.example.cinematickets.screens.booking
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,10 +11,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -22,25 +20,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinematickets.R
-import com.example.cinematickets.composable.ActorItem
 import com.example.cinematickets.composable.ImageButton
-import com.example.cinematickets.composable.MovieTextDetails
 import com.example.cinematickets.composable.OutlineButton
-import com.example.cinematickets.composable.SpacerHorizontal8
-import com.example.cinematickets.composable.SpacerVertical16
 import com.example.cinematickets.ui.theme.Orange80
 import com.example.cinematickets.util.Constant.DEFAULT_IMAGE
 
@@ -66,10 +56,6 @@ private fun BookingContent() {
             }
         )
     }
-//    Box(modifier = Modifier.fillMaxSize()) {
-//        Header(modifier = Modifier.align(Alignment.TopCenter))
-//        BottomSheet(modifier = Modifier.align(Alignment.BottomCenter))
-//    }
 }
 
 @Composable
@@ -137,8 +123,7 @@ private fun BottomSheetContent() {
                     MovieTextDetails(title = "4/10", subtitle = "IGN")
                 }
 
-                SpacerVertical16()
-                Text(
+                Text(modifier = Modifier.padding(top = 16.dp),
                     text = "Fantastic Beasts: The\nSecrets of Dumbledore",
                     fontSize = 22.sp,
                     textAlign = TextAlign.Center
@@ -151,8 +136,7 @@ private fun BottomSheetContent() {
             horizontalArrangement = Arrangement.Center
         ) {
             OutlineButton(text = "Fantasy") {}
-            SpacerHorizontal8()
-            OutlineButton(text = "Adventure") {}
+            OutlineButton(modifier = Modifier.padding(start = 8.dp), text = "Adventure") {}
         }
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
@@ -185,10 +169,4 @@ private fun BottomSheetContent() {
             }
         }
     }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun PreviewBookingScreen() {
-    BookingScreen()
 }

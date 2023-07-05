@@ -48,8 +48,8 @@ fun ImageButton(
             tint = iconTint
         )
         if (text.isNotEmpty()) {
-            SpacerHorizontal8()
             Text(
+                modifier = Modifier.padding(start = 8.dp),
                 text = text,
                 fontSize = textSize.sp,
                 color = TextWhite
