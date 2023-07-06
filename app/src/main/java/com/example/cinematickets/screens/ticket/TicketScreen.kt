@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavHostController
 import com.example.cinematickets.R
 import com.example.cinematickets.composable.Circle
 import com.example.cinematickets.composable.ImageButton
@@ -42,20 +43,22 @@ import com.example.cinematickets.ui.theme.Gray
 import com.example.cinematickets.ui.theme.Orange80
 
 @Composable
-fun TicketScreen() {
-    TicketContent()
+fun TicketScreen(navController: NavHostController) {
+    TicketContent() {
+        navController.popBackStack()
+    }
 }
 
 
 @Composable
-fun TicketContent() {
+fun TicketContent(closeButton: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(BlackBackground)
     ) {
 
-        Header()
+        Header(closeButton)
         CinemaChairs()
 
         Row(
@@ -81,7 +84,7 @@ fun BottomSheet() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 16.dp)
+            .padding(top = 8.dp)
             .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
             .background(Color.White)
     ) {
@@ -102,7 +105,7 @@ fun BottomSheet() {
             }
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+//        Spacer(modifier = Modifier.weight(2f))
 
         Row(
             modifier = Modifier
@@ -179,16 +182,16 @@ fun CircleWithText(
 }
 
 @Composable
-private fun Header() {
+private fun Header(closeButton: () -> Unit) {
     ImageButton(
         modifier = Modifier.padding(top = 32.dp, start = 16.dp),
         painter = R.drawable.close_circle
-    ) {}
+    ) { closeButton() }
     Image(
         modifier = Modifier
-            .padding(top = 16.dp)
             .fillMaxWidth()
-            .fillMaxHeight(0.2f),
+            .padding(8.dp)
+            .fillMaxHeight(0.15f),
         painter = painterResource(id = R.drawable.background),
         contentDescription = "Header Image",
     )
@@ -278,11 +281,4 @@ private fun ChairItem(
             tint = Gray
         )
     }
-}
-
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun TicketScreenPreview() {
-    TicketScreen()
 }

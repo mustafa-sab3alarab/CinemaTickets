@@ -17,6 +17,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,31 +29,46 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinematickets.R
 import com.example.cinematickets.composable.ImageButton
 import com.example.cinematickets.composable.OutlineButton
 import com.example.cinematickets.ui.theme.Orange80
 import com.example.cinematickets.util.Constant.DEFAULT_IMAGE
+import com.example.cinematickets.viewmodels.BookingUIState
+import com.example.cinematickets.viewmodels.BookingViewModel
 
 @Composable
-fun BookingScreen() {
-    BookingContent()
+fun BookingScreen(
+    navController: NavHostController,
+    viewModel: BookingViewModel = hiltViewModel()
+) {
+    val state by viewModel.state.collectAsState()
+
+    BookingContent(state) {
+        navController.popBackStack()
+    }
 }
+
 @Composable
-private fun BookingContent() {
+private fun BookingContent(state : BookingUIState, closeButton: () -> Unit) {
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (header , bottomSheet) = createRefs()
+        val (header, bottomSheet) = createRefs()
 
         val guideLine = createGuidelineFromTop(0.5f)
         Header(
-            modifier = Modifier.constrainAs(header){
+            state = state,
+            modifier = Modifier.constrainAs(header) {
                 top.linkTo(parent.top)
             }
-        )
+        ) {
+            closeButton()
+        }
         BottomSheet(
-            modifier = Modifier.constrainAs(bottomSheet){
+            modifier = Modifier.constrainAs(bottomSheet) {
                 top.linkTo(guideLine)
             }
         )
@@ -59,16 +76,18 @@ private fun BookingContent() {
 }
 
 @Composable
-private fun Header(modifier: Modifier = Modifier) {
+private fun Header(state : BookingUIState, modifier: Modifier = Modifier, closeButton: () -> Unit) {
     Box(modifier = modifier.aspectRatio(4f / 5f)) {
         Image(
             modifier = Modifier.fillMaxSize(),
-            painter = rememberAsyncImagePainter(model = "https://www.chicklit.nl/ckfinder/userfiles/images/Chicklit/artikelen/Films/Fantastic%20Beasts-%20The%20Secrets%20of%20Dumbledore%20-%20Dumbledore.jpeg"),
+            painter = rememberAsyncImagePainter(model = state.image),
             contentDescription = "avatar",
             contentScale = ContentScale.Crop
         )
 
-        Toolbar()
+        Toolbar() {
+            closeButton()
+        }
 
         ImageButton(
             painter = R.drawable.play,
@@ -81,7 +100,7 @@ private fun Header(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun Toolbar() {
+private fun Toolbar(closeButton: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -89,7 +108,7 @@ private fun Toolbar() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        ImageButton(painter = R.drawable.close_circle) {}
+        ImageButton(painter = R.drawable.close_circle) { closeButton() }
         ImageButton(painter = R.drawable.clock, text = "2h 23m") {}
     }
 }
@@ -123,7 +142,8 @@ private fun BottomSheetContent() {
                     MovieTextDetails(title = "4/10", subtitle = "IGN")
                 }
 
-                Text(modifier = Modifier.padding(top = 16.dp),
+                Text(
+                    modifier = Modifier.padding(top = 16.dp),
                     text = "Fantastic Beasts: The\nSecrets of Dumbledore",
                     fontSize = 22.sp,
                     textAlign = TextAlign.Center
