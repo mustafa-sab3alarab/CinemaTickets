@@ -1,6 +1,6 @@
 package com.example.cinematickets.screens
 
-import com.example.cinematickets.viewmodels.MovieUIState
+import com.example.cinematickets.screens.home.MovieUIState
 
 object DataSource {
 

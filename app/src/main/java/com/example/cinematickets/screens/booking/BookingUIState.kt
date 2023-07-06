@@ -1,4 +1,4 @@
-package com.example.cinematickets.viewmodels
+package com.example.cinematickets.screens.booking
 
 data class BookingUIState(
     val image : String = ""

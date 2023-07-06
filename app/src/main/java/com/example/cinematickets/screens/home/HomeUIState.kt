@@ -1,4 +1,4 @@
-package com.example.cinematickets.viewmodels
+package com.example.cinematickets.screens.home
 
 data class HomeUIState(
     val movies: List<MovieUIState> = emptyList()

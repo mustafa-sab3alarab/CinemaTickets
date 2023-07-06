@@ -1,9 +1,8 @@
-package com.example.cinematickets.viewmodels
+package com.example.cinematickets.screens.booking
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.cinematickets.screens.DataSource
-import com.example.cinematickets.screens.booking.BookingArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -37,8 +37,6 @@ import com.example.cinematickets.composable.ImageButton
 import com.example.cinematickets.composable.OutlineButton
 import com.example.cinematickets.ui.theme.Orange80
 import com.example.cinematickets.util.Constant.DEFAULT_IMAGE
-import com.example.cinematickets.viewmodels.BookingUIState
-import com.example.cinematickets.viewmodels.BookingViewModel
 
 @Composable
 fun BookingScreen(

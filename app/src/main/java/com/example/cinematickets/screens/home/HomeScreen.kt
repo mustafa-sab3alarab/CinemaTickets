@@ -44,8 +44,6 @@ import com.example.cinematickets.R
 import com.example.cinematickets.composable.OutlineButton
 import com.example.cinematickets.screens.booking.navigateToBookingScreen
 import com.example.cinematickets.ui.theme.Orange80
-import com.example.cinematickets.viewmodels.HomeUIState
-import com.example.cinematickets.viewmodels.HomeViewModel
 import kotlin.math.absoluteValue
 
 @Composable

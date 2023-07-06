@@ -1,7 +1,8 @@
-package com.example.cinematickets.viewmodels
+package com.example.cinematickets.screens.home
 
 import androidx.lifecycle.ViewModel
 import com.example.cinematickets.screens.DataSource
+import com.example.cinematickets.screens.home.HomeUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
