@@ -32,6 +32,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
+import com.example.cinematickets.AppDestination
 import com.example.cinematickets.R
 import com.example.cinematickets.composable.ImageButton
 import com.example.cinematickets.composable.OutlineButton
@@ -46,12 +47,12 @@ fun BookingScreen(
     val state by viewModel.state.collectAsState()
 
     BookingContent(state) {
-        navController.popBackStack("homeScreen",false)
+        navController.popBackStack(AppDestination.HomeScreen.route, false)
     }
 }
 
 @Composable
-private fun BookingContent(state : BookingUIState, closeButton: () -> Unit) {
+private fun BookingContent(state: BookingUIState, closeButton: () -> Unit) {
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (header, bottomSheet) = createRefs()
@@ -74,7 +75,7 @@ private fun BookingContent(state : BookingUIState, closeButton: () -> Unit) {
 }
 
 @Composable
-private fun Header(state : BookingUIState, modifier: Modifier = Modifier, closeButton: () -> Unit) {
+private fun Header(state: BookingUIState, modifier: Modifier = Modifier, closeButton: () -> Unit) {
     Box(modifier = modifier.aspectRatio(4f / 5f)) {
         Image(
             modifier = Modifier.fillMaxSize(),

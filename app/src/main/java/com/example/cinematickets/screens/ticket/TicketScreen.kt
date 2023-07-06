@@ -103,8 +103,6 @@ fun BottomSheet() {
             }
         }
 
-//        Spacer(modifier = Modifier.weight(2f))
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
