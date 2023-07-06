@@ -6,5 +6,5 @@ import androidx.navigation.compose.composable
 import com.example.cinematickets.AppDestination
 
 fun NavGraphBuilder.ticketRoute(navHostController: NavHostController) {
-    composable(AppDestination.TicketScreen.route) { TicketScreen(navHostController) }
+    composable(AppDestination.TicketScreen.route) { TicketScreen(navController = navHostController) }
 }

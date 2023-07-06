@@ -8,18 +8,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.cinematickets.AppDestination
 import com.example.cinematickets.R
 import com.example.cinematickets.ui.theme.Orange80
 
 @Composable
 fun BottomNavBar(navController: NavHostController) {
-    val selectedScreen = remember { mutableStateOf("homeScreen") }
+    val current = navController.currentBackStackEntryAsState()
+    val selectedScreen = current.value?.destination?.route ?: AppDestination.HomeScreen.route
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,12 +32,10 @@ fun BottomNavBar(navController: NavHostController) {
         ImageButton(
             painter = R.drawable.video_play,
             modifier = Modifier.size(48.dp),
-            iconTint = if (selectedScreen.value == "homeScreen") Color.White else Color.Gray,
-            backgroundColor = if (selectedScreen.value == "homeScreen") Orange80 else Color.Transparent
+            iconTint = if (selectedScreen == AppDestination.HomeScreen.route) Color.White else Color.Gray,
+            backgroundColor = if (selectedScreen == AppDestination.HomeScreen.route) Orange80 else Color.Transparent
         ) {
-            navController.navigate("homeScreen") {
-                selectedScreen.value = "homeScreen"
-            }
+            navController.navigate(AppDestination.HomeScreen.route)
         }
         ImageButton(
             painter = R.drawable.search_normal,
@@ -47,12 +46,10 @@ fun BottomNavBar(navController: NavHostController) {
         ImageButton(
             painter = R.drawable.ticket,
             modifier = Modifier.size(48.dp),
-            iconTint = if (selectedScreen.value == "ticketScreen") Color.White else Color.Gray,
-            backgroundColor = if (selectedScreen.value == "ticketScreen") Orange80 else Color.Transparent
+            iconTint = if (selectedScreen == AppDestination.TicketScreen.route) Color.White else Color.Gray,
+            backgroundColor = if (selectedScreen== AppDestination.TicketScreen.route) Orange80 else Color.Transparent
         ) {
-            navController.navigate("ticketScreen") {
-                selectedScreen.value = "ticketScreen"
-            }
+            navController.navigate(AppDestination.TicketScreen.route)
         }
         ImageButton(
             painter = R.drawable.profile,
