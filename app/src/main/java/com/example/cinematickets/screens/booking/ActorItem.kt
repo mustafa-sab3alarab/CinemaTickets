@@ -12,10 +12,11 @@ import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ActorItem(
-    imageUrl: String
+    imageUrl: String,
+    modifier: Modifier = Modifier
 ) {
     Image(
-        modifier = Modifier
+        modifier = modifier
             .size(72.dp)
             .clip(CircleShape),
         contentScale = ContentScale.Crop,

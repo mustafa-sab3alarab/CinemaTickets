@@ -4,12 +4,11 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import com.example.cinematickets.screens.ticket.TicketScreen
-import com.example.cinematickets.ui.theme.CinemaTicketsTheme
+import androidx.compose.material3.ExperimentalMaterial3Api
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,14 +17,7 @@ class MainActivity : ComponentActivity() {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
         setContent {
-            CinemaTicketsTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-//                    HomeScreen()
-                    TicketScreen()
-                }
-            }
+            CinemaApp()
         }
     }
 }

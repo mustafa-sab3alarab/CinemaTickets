@@ -81,8 +81,6 @@ private fun HomeContent(
             MovieDetails()
 
         }
-
-        BottomNavBar()
     }
 }
 
@@ -197,40 +195,5 @@ private fun MovieDetails() {
     ) {
         OutlineButton(modifier = Modifier.padding(end = 8.dp),text = "Fantasy") {}
         OutlineButton(text = "Adventure") {}
-    }
-}
-
-@Composable
-private fun BoxScope.BottomNavBar() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .align(Alignment.BottomCenter)
-            .padding(bottom = 32.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        ImageButton(
-            painter = R.drawable.video_play,
-            modifier = Modifier.size(48.dp),
-            backgroundColor = Orange80
-        ) {}
-        ImageButton(
-            painter = R.drawable.search_normal,
-            modifier = Modifier.size(48.dp),
-            iconTint = Color.Gray,
-            backgroundColor = Color.Transparent
-        ) {}
-        ImageButton(
-            painter = R.drawable.ticket,
-            modifier = Modifier.size(48.dp),
-            iconTint = Color.Gray,
-            backgroundColor = Color.Transparent
-        ) {}
-        ImageButton(
-            painter = R.drawable.profile,
-            modifier = Modifier.size(48.dp),
-            iconTint = Color.Gray,
-            backgroundColor = Color.Transparent
-        ) {}
     }
 }
