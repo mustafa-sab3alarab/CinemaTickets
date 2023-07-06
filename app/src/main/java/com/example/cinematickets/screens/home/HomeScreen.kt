@@ -42,6 +42,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.cinematickets.R
 import com.example.cinematickets.composable.OutlineButton
+import com.example.cinematickets.screens.booking.navigateToBookingScreen
 import com.example.cinematickets.ui.theme.Orange80
 import com.example.cinematickets.viewmodels.HomeUIState
 import com.example.cinematickets.viewmodels.HomeViewModel
@@ -55,7 +56,7 @@ fun HomeScreen(
     val state by viewModel.state.collectAsState()
     val pagerState = rememberPagerState()
     HomeContent(state = state, pagerState = pagerState) { id ->
-        navController.navigate("bookingScreen/$id")
+        navController.navigateToBookingScreen(id)
     }
 }
 

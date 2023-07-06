@@ -3,6 +3,7 @@ package com.example.cinematickets.viewmodels
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.cinematickets.screens.DataSource
+import com.example.cinematickets.screens.booking.BookingArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,14 +18,14 @@ class BookingViewModel @Inject constructor(
     private val _state = MutableStateFlow(BookingUIState())
     val state = _state.asStateFlow()
 
-    private val args = checkNotNull(savedStateHandle["id"])
+    private val args = BookingArgs(savedStateHandle)
 
     init {
         _state.update { state ->
             state.copy(
                 image = "${
                     DataSource.newShowingMovies().find {
-                        it.id == args.toString().toInt()
+                        it.id == args.imageId.toString().toInt()
                     }?.imageUrl
                 }"
             )

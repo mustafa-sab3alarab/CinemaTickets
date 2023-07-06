@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.cinematickets.composable.BottomNavBar
 import com.example.cinematickets.composable.ImageButton
 import com.example.cinematickets.screens.booking.BookingScreen
 import com.example.cinematickets.screens.home.HomeScreen
@@ -39,63 +40,8 @@ fun CinemaApp() {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             bottomBar = { BottomNavBar(navController) }) {
-            NavHost(navController = navController, startDestination = "HomeScreen") {
-                composable("homeScreen") { HomeScreen(navController) }
-                composable(
-                    "bookingScreen/{id}",
-                    arguments = listOf(
-                        navArgument("id") { NavType.IntType }
-                    )
-                ) { BookingScreen(navController) }
-                composable("ticketScreen") { TicketScreen(navController) }
-            }
+            NavGraph(navHostController = navController)
         }
     }
-
 }
 
-@Composable
-private fun BottomNavBar(navController: NavHostController) {
-    val selectedScreen = remember { mutableStateOf("homeScreen") }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(80.dp)
-            .background(Color.White)
-            .padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-        ImageButton(
-            painter = R.drawable.video_play,
-            modifier = Modifier.size(48.dp),
-            iconTint = if (selectedScreen.value == "homeScreen") Color.White else Color.Gray,
-            backgroundColor = if (selectedScreen.value == "homeScreen") Orange80 else Color.Transparent
-        ) {
-            navController.navigate("homeScreen") {
-                selectedScreen.value = "homeScreen"
-            }
-        }
-        ImageButton(
-            painter = R.drawable.search_normal,
-            modifier = Modifier.size(48.dp),
-            iconTint = Color.Gray,
-            backgroundColor = Color.Transparent
-        ) {}
-        ImageButton(
-            painter = R.drawable.ticket,
-            modifier = Modifier.size(48.dp),
-            iconTint = if (selectedScreen.value == "ticketScreen") Color.White else Color.Gray,
-            backgroundColor = if (selectedScreen.value == "ticketScreen") Orange80 else Color.Transparent
-        ) {
-            navController.navigate("ticketScreen") {
-                selectedScreen.value = "ticketScreen"
-            }
-        }
-        ImageButton(
-            painter = R.drawable.profile,
-            modifier = Modifier.size(48.dp),
-            iconTint = Color.Gray,
-            backgroundColor = Color.Transparent
-        ) {}
-    }
-}
