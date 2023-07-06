@@ -48,7 +48,7 @@ fun BookingScreen(
     val state by viewModel.state.collectAsState()
 
     BookingContent(state) {
-        navController.popBackStack()
+        navController.popBackStack("homeScreen",false)
     }
 }
 

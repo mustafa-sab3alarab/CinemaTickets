@@ -44,21 +44,19 @@ import com.example.cinematickets.ui.theme.Orange80
 
 @Composable
 fun TicketScreen(navController: NavHostController) {
-    TicketContent() {
-        navController.popBackStack()
-    }
+    TicketContent()
 }
 
 
 @Composable
-fun TicketContent(closeButton: () -> Unit) {
+fun TicketContent() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(BlackBackground)
     ) {
 
-        Header(closeButton)
+        Header()
         CinemaChairs()
 
         Row(
@@ -182,15 +180,11 @@ fun CircleWithText(
 }
 
 @Composable
-private fun Header(closeButton: () -> Unit) {
-    ImageButton(
-        modifier = Modifier.padding(top = 32.dp, start = 16.dp),
-        painter = R.drawable.close_circle
-    ) { closeButton() }
+private fun Header() {
     Image(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(top = 64.dp, bottom = 16.dp)
             .fillMaxHeight(0.15f),
         painter = painterResource(id = R.drawable.background),
         contentDescription = "Header Image",
