@@ -1,5 +1,6 @@
 package com.example.cinematickets.screens.ticket
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,9 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -38,7 +37,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.example.cinematickets.R
 import com.example.cinematickets.composable.Circle
@@ -103,7 +101,10 @@ fun BottomSheet() {
             contentPadding = PaddingValues(top = 32.dp, end = 16.dp, start = 16.dp, bottom = 16.dp)
         ) {
             items((14..31).toList()) { item ->
-                DateItem(date = item.toString(), isSelected = selectedDate == item.toString()) { date ->
+                DateItem(
+                    date = item.toString(),
+                    isSelected = selectedDate == item.toString()
+                ) { date ->
                     selectedDate = if (selectedDate == date) "" else date
                 }
             }
@@ -227,80 +228,90 @@ private fun CinemaChairs() {
         verticalArrangement = Arrangement.spacedBy(16.dp),
         columns = GridCells.Fixed(count = 3)
     ) {
-        itemsIndexed(
-            listOf(
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-            )
-        ) { index: Int, item: String ->
-            when (index % 3) {
-                0 -> ChairItem(10f)
-                1 -> ChairItem(0f, offset = 9f)
-                2 -> ChairItem(-10f)
+        items(15) {
+            when (it % 3) {
+                0 -> ChairItem(rotate = 10f)
+                1 -> ChairItem(rotate = 0f, offset = 9f)
+                2 -> ChairItem(rotate = -10f)
             }
+        }
+    }
+}
+
+sealed class ChairState(val chairColor: Color) {
+    object Available : ChairState(Color.White)
+    object Taken : ChairState(Gray)
+    object Selected : ChairState(Orange80)
+
+    fun nextState(): ChairState {
+        return when (this) {
+            Available -> Selected
+            Taken -> Taken
+            Selected -> Available
         }
     }
 }
 
 @Composable
 private fun ChairItem(
+    modifier: Modifier = Modifier,
+    offset: Float = 0f,
     rotate: Float,
-    offset: Float = 0f
+    chairState: Pair<ChairState, ChairState> = Pair(ChairState.Available, ChairState.Available)
 ) {
-    ConstraintLayout(
-        modifier = Modifier
+
+    var leftChairState by remember { mutableStateOf(chairState.first) }
+    var rightChairState by remember { mutableStateOf(chairState.second) }
+
+    val leftChairColor by animateColorAsState(getChairColor(leftChairState))
+    val rightChairColor by animateColorAsState(getChairColor(rightChairState))
+
+    Box(
+        modifier = modifier
             .rotate(rotate)
             .offset(y = offset.dp)
-            .size(45.dp)
+            .size(45.dp),
+        contentAlignment = Alignment.Center
     ) {
-        val (chair1, chair2, container) = createRefs()
         Icon(
-            modifier = Modifier
-                .size(75.dp)
-                .constrainAs(chair1) {
-                    bottom.linkTo(container.bottom, margin = 4.dp)
-                },
-            painter = painterResource(id = R.drawable.chair),
-            contentDescription = "",
-            tint = Orange80
-        )
-        Icon(
-            modifier = Modifier
-                .size(75.dp)
-                .constrainAs(chair2) {
-                    bottom.linkTo(container.bottom, margin = 4.dp)
-                    end.linkTo(container.end)
-                },
-            painter = painterResource(id = R.drawable.chair),
-            contentDescription = "",
-            tint = Color.White
-        )
-
-        Icon(
-            modifier = Modifier
-                .fillMaxSize()
-                .constrainAs(container) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
+            modifier = Modifier.size(150.dp),
             painter = painterResource(id = R.drawable.chair_container),
-            contentDescription = "",
+            contentDescription = "chair container",
             tint = Gray
         )
+
+        Row(
+            modifier = Modifier.padding(bottom = 8.dp)
+        ) {
+            Icon(
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .size(75.dp)
+                    .weight(1f)
+                    .clickable { leftChairState = leftChairState.nextState() },
+                painter = painterResource(id = R.drawable.chair),
+                contentDescription = "left chair",
+                tint = leftChairColor
+            )
+            Icon(
+                modifier = Modifier
+                    .size(75.dp)
+                    .padding(end = 16.dp)
+                    .weight(1f)
+                    .clickable { rightChairState = rightChairState.nextState() },
+                painter = painterResource(id = R.drawable.chair),
+                contentDescription = "right chair",
+                tint = rightChairColor
+            )
+        }
+
+    }
+}
+
+private fun getChairColor(chair: ChairState): Color {
+    return when (chair) {
+        ChairState.Available -> ChairState.Available.chairColor
+        ChairState.Taken -> ChairState.Taken.chairColor
+        ChairState.Selected -> ChairState.Selected.chairColor
     }
 }
