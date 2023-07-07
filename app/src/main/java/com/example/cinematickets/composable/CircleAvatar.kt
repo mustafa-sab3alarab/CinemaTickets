@@ -1,4 +1,4 @@
-package com.example.cinematickets.screens.booking
+package com.example.cinematickets.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
-fun ActorItem(
+fun CircleAvatar(
     imageUrl: String,
     modifier: Modifier = Modifier
 ) {
@@ -21,6 +21,6 @@ fun ActorItem(
             .clip(CircleShape),
         contentScale = ContentScale.Crop,
         painter = rememberAsyncImagePainter(model = imageUrl),
-        contentDescription = "actor image"
+        contentDescription = "avatar"
     )
 }
